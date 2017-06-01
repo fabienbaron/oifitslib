@@ -1,10 +1,13 @@
+/* $Id: free_fits.c,v 1.2 2007-10-10 17:29:17 jsy1001 Exp $ */
+
 /**
- * @file
+ * @file free_fits.c
  * @ingroup oitable
+ *
  * Implementation of functions to free storage allocated by routines
  * in read_fits.c
  *
- * Copyright (C) 2007, 2015 John Young
+ * Copyright (C) 2007 John Young
  *
  *
  * This file is part of OIFITSlib.
@@ -24,13 +27,17 @@
  * http://www.gnu.org/licenses/
  */
 
+#include <stdlib.h>
+#include <string.h>
+
 #include "exchange.h"
+#include "fitsio.h"
 
 
 /**
- * Free dynamically-allocated storage within oi_array struct
+ * Free dynamically-allocated storage within oi_array struct.
  *
- * @param pArray  pointer to array data struct, see exchange.h
+ *   @param pArray  pointer to array data struct, see exchange.h
  */
 void free_oi_array(oi_array *pArray)
 {
@@ -38,9 +45,9 @@ void free_oi_array(oi_array *pArray)
 }
 
 /**
- * Free dynamically-allocated storage within oi_target struct
+ * Free dynamically-allocated storage within oi_target struct.
  *
- * @param pTargets  pointer to targets data struct, see exchange.h
+ *   @param pTargets  pointer to targets data struct, see exchange.h
  */
 void free_oi_target(oi_target *pTargets)
 {
@@ -48,9 +55,9 @@ void free_oi_target(oi_target *pTargets)
 }
 
 /**
- * Free dynamically-allocated storage within oi_wavelength struct
+ * Free dynamically-allocated storage within oi_wavelength struct.
  *
- * @param pWave  pointer to wavelength data struct, see exchange.h
+ *   @param pWave  pointer to wavelength data struct, see exchange.h
  */
 void free_oi_wavelength(oi_wavelength *pWave)
 {
@@ -59,74 +66,34 @@ void free_oi_wavelength(oi_wavelength *pWave)
 }
 
 /**
- * Free dynamically-allocated storage within oi_corr struct
+ * Free dynamically-allocated storage within oi_vis struct.
  *
- * @param pCorr  pointer to corr data struct, see exchange.h
- */
-void free_oi_corr(oi_corr *pCorr)
-{
-  free(pCorr->iindx);
-  free(pCorr->jindx);
-  free(pCorr->corr);
-}
-
-/**
- * Free dynamically-allocated storage within oi_inspol struct
- *
- * @param pInspol  pointer to inspol data struct, see exchange.h
- */
-void free_oi_inspol(oi_inspol *pInspol)
-{
-  int i;
-
-  for (i = 0; i < pInspol->numrec; i++) {
-    free(pInspol->record[i].lxx);
-    free(pInspol->record[i].lyy);
-    free(pInspol->record[i].lxy);
-    free(pInspol->record[i].lyx);
-  }
-  free(pInspol->record);
-}
-
-/**
- * Free dynamically-allocated storage within oi_vis struct
- *
- * @param pVis  pointer to data struct, see exchange.h
+ *   @param pVis  pointer to data struct, see exchange.h
  */
 void free_oi_vis(oi_vis *pVis)
 {
   int i;
-
-  for (i = 0; i < pVis->numrec; i++) {
+  
+  for(i=0; i<pVis->numrec; i++) {
     free(pVis->record[i].visamp);
     free(pVis->record[i].visamperr);
     free(pVis->record[i].visphi);
     free(pVis->record[i].visphierr);
     free(pVis->record[i].flag);
-
-    if (pVis->usevisrefmap)
-      free(pVis->record[i].visrefmap);
-
-    if (pVis->usecomplex) {
-      free(pVis->record[i].rvis);
-      free(pVis->record[i].rviserr);
-      free(pVis->record[i].ivis);
-      free(pVis->record[i].iviserr);
-    }
   }
   free(pVis->record);
 }
 
 /**
- * Free dynamically-allocated storage within oi_vis2 struct
+ * Free dynamically-allocated storage within oi_vis struct.
  *
- * @param pVis2  pointer to data struct, see exchange.h
+ *   @param pVis2  pointer to data struct, see exchange.h
  */
 void free_oi_vis2(oi_vis2 *pVis2)
 {
   int i;
 
-  for (i = 0; i < pVis2->numrec; i++) {
+  for(i=0; i<pVis2->numrec; i++) {
     free(pVis2->record[i].vis2data);
     free(pVis2->record[i].vis2err);
     free(pVis2->record[i].flag);
@@ -135,15 +102,15 @@ void free_oi_vis2(oi_vis2 *pVis2)
 }
 
 /**
- * Free dynamically-allocated storage within oi_t3 struct
+ * Free dynamically-allocated storage within oi_vis struct.
  *
- * @param pT3  pointer to data struct, see exchange.h
+ *   @param pT3  pointer to data struct, see exchange.h
  */
 void free_oi_t3(oi_t3 *pT3)
 {
   int i;
 
-  for (i = 0; i < pT3->numrec; i++) {
+  for(i=0; i<pT3->numrec; i++) {
     free(pT3->record[i].t3amp);
     free(pT3->record[i].t3amperr);
     free(pT3->record[i].t3phi);
@@ -154,18 +121,20 @@ void free_oi_t3(oi_t3 *pT3)
 }
 
 /**
- * Free dynamically-allocated storage within oi_flux struct
+ * Free dynamically-allocated storage within oi_t4 struct.
  *
- * @param pFlux  pointer to data struct, see exchange.h
+ *   @param pT3  pointer to data struct, see exchange.h
  */
-void free_oi_flux(oi_flux *pFlux)
+void free_oi_t4(oi_t4 *pT4)
 {
   int i;
 
-  for (i = 0; i < pFlux->numrec; i++) {
-    free(pFlux->record[i].fluxdata);
-    free(pFlux->record[i].fluxerr);
-    free(pFlux->record[i].flag);
+  for(i=0; i<pT4->numrec; i++) {
+    free(pT4->record[i].t4amp);
+    free(pT4->record[i].t4amperr);
+    free(pT4->record[i].t4phi);
+    free(pT4->record[i].t4phierr);
+    free(pT4->record[i].flag);
   }
-  free(pFlux->record);
+  free(pT4->record);
 }

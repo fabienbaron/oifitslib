@@ -1,9 +1,12 @@
+/* $Id: oicheck.h,v 1.3 2007-10-31 18:30:03 jsy1001 Exp $ */
+
 /**
- * @file
+ * @file oicheck.h
  * @ingroup oicheck
+ *
  * Definitions for OIFITS conformity checker.
  *
- * Copyright (C) 2007, 2015 John Young
+ * Copyright (C) 2007 John Young
  *
  *
  * This file is part of OIFITSlib.
@@ -35,19 +38,12 @@
  * dataset, so that an application can perform only those checks that
  * are relevant to the tasks it performs. The available checking
  * functions are:
- * - check_tables()
- * - check_header()
- * - check_keywords()
- * - check_visrefmap()
  * - check_unique_targets()
  * - check_targets_present()
  * - check_elements_present()
- * - check_corr_present()
  * - check_flagging()
  * - check_t3amp()
  * - check_waveorder()
- * - check_time()
- * - check_flux()
  *
  * Each checking function is passed a pointer to a oi_fits struct
  * containing the data to check (except check_unique_targets()), and a
@@ -87,8 +83,6 @@ typedef enum {
   OI_BREACH_NOT_FITS,   /**< Does not conform to the FITS standard */
 } oi_breach_level;
 
-extern const char *const oi_breach_level_desc[];
-
 /** Result of checking for a particular class of standard breach */
 typedef struct {
   oi_breach_level level;      /**< Severity of breach */
@@ -99,7 +93,7 @@ typedef struct {
 } oi_check_result;
 
 /** Standard interface to checking function. */
-typedef oi_breach_level (*check_func)(const oi_fits *, oi_check_result *);
+typedef oi_breach_level (*check_func)(oi_fits *, oi_check_result *);
 
 
 /*
@@ -109,20 +103,12 @@ void init_check_result(oi_check_result *);
 void free_check_result(oi_check_result *);
 char *format_check_result(oi_check_result *);
 void print_check_result(oi_check_result *);
-oi_breach_level check_tables(const oi_fits *, oi_check_result *);
-oi_breach_level check_header(const oi_fits *, oi_check_result *);
-oi_breach_level check_keywords(const oi_fits *, oi_check_result *);
-oi_breach_level check_visrefmap(const oi_fits *, oi_check_result *);
-oi_breach_level check_unique_targets(const oi_fits *, oi_check_result *);
-oi_breach_level check_targets_present(const oi_fits *, oi_check_result *);
-oi_breach_level check_arrname(const oi_fits *, oi_check_result *);
-oi_breach_level check_elements_present(const oi_fits *, oi_check_result *);
-oi_breach_level check_corr_present(const oi_fits *, oi_check_result *);
-oi_breach_level check_flagging(const oi_fits *, oi_check_result *);
-oi_breach_level check_t3amp(const oi_fits *, oi_check_result *);
-oi_breach_level check_waveorder(const oi_fits *, oi_check_result *);
-oi_breach_level check_time(const oi_fits *, oi_check_result *);
-oi_breach_level check_flux(const oi_fits *, oi_check_result *);
+oi_breach_level check_unique_targets(oi_fits *, oi_check_result *);
+oi_breach_level check_targets_present(oi_fits *, oi_check_result *);
+oi_breach_level check_elements_present(oi_fits *, oi_check_result *);
+oi_breach_level check_flagging(oi_fits *, oi_check_result *);
+oi_breach_level check_t3amp(oi_fits *, oi_check_result *);
+oi_breach_level check_waveorder(oi_fits *, oi_check_result *);
 
 #endif /* #ifndef OICHECK_H */
 

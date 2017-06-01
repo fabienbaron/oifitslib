@@ -1,9 +1,12 @@
+/* $Id: oimerge.h,v 1.1 2007-10-12 17:07:10 jsy1001 Exp $ */
+
 /**
- * @file
+ * @file oimerge.h
  * @ingroup oimerge
+ *
  * Definitions for merge component of OIFITSlib.
  *
- * Copyright (C) 2007, 2015 John Young
+ * Copyright (C) 2007 John Young
  *
  *
  * This file is part of OIFITSlib.
@@ -29,9 +32,11 @@
  * This module implements merging of a list of OIFITS datasets into a
  * single dataset.
  *
- * Target records with the same target name are merged (without
- * checking that the coordinates etc. are identical), as are duplicate
- * OI_WAVELENGTH tables.
+ * To simplify the implementation, OI_ARRAY tables are not copied into
+ * the output dataset (these are not required by the OIFITS
+ * standard). Target records with the same target name are merged
+ * (without checking that the coordinates etc. are identical), as are
+ * duplicate OI_WAVELENGTH tables.
  *
  * A merged dataset should be obtained by calling merge_oi_fits()
  * (which takes a variable number of arguments) or
@@ -51,19 +56,11 @@
 /*
  * Function prototypes
  */
-void merge_oi_header(const GList *, oi_fits *);
 GHashTable *merge_oi_target(const GList *, oi_fits *);
-GList *merge_all_oi_array(const GList *, oi_fits *);
 GList *merge_all_oi_wavelength(const GList *, oi_fits *);
-GList *merge_all_oi_corr(const GList *, oi_fits *);
-void merge_all_oi_vis(const GList *, GHashTable *,
-                      const GList *, const GList *, const GList *, oi_fits *);
-void merge_all_oi_vis2(const GList *, GHashTable *,
-                       const GList *, const GList *, const GList *, oi_fits *);
-void merge_all_oi_t3(const GList *, GHashTable *,
-                     const GList *, const GList *, const GList *, oi_fits *);
-void merge_all_oi_flux(const GList *, GHashTable *, const GList *,
-                       const GList *, const GList *, oi_fits *);
+void merge_all_oi_vis(const GList *, GHashTable *, const GList *, oi_fits *);
+void merge_all_oi_vis2(const GList *, GHashTable *, const GList *, oi_fits *);
+void merge_all_oi_t3(const GList *, GHashTable *, const GList *, oi_fits *);
 void merge_oi_fits_list(const GList *, oi_fits *);
 void merge_oi_fits(oi_fits *, oi_fits *, oi_fits *,...);
 
