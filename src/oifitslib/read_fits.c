@@ -871,10 +871,10 @@ STATUS read_next_oi_t4(fitsfile *fptr, oi_t4 *pT4, STATUS *pStatus)
 		  &pT4->record[irow-1].v2coord, &anynull, pStatus);
     fits_get_colnum(fptr, CASEINSEN, "U3COORD", &colnum, pStatus);
     fits_read_col(fptr, TDOUBLE, colnum, irow, 1, 1, &nulldouble,
-		  &pT4->record[irow-1].u2coord, &anynull, pStatus);
+		  &pT4->record[irow-1].u3coord, &anynull, pStatus);
     fits_get_colnum(fptr, CASEINSEN, "V3COORD", &colnum, pStatus);
     fits_read_col(fptr, TDOUBLE, colnum, irow, 1, 1, &nulldouble,
-		  &pT4->record[irow-1].v2coord, &anynull, pStatus);
+		  &pT4->record[irow-1].v3coord, &anynull, pStatus);
     fits_get_colnum(fptr, CASEINSEN, "STA_INDEX", &colnum, pStatus);
     fits_read_col(fptr, TINT, colnum, irow, 1, 4, &nullint,
 		  pT4->record[irow-1].sta_index, &anynull, pStatus);
